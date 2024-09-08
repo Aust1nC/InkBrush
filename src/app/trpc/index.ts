@@ -33,7 +33,7 @@ export const appRouter = router({
     const { userId } = ctx;
     return await db.file.findMany({
       where: {
-        uesrId: userId,
+        userId: userId,
       },
     });
   }),
@@ -44,7 +44,7 @@ export const appRouter = router({
       const file = db.file.findFirst({
         where: {
           id: input.id,
-          uesrId: userId,
+          userId: userId,
         },
       });
 
@@ -55,6 +55,22 @@ export const appRouter = router({
           id: input.id,
         },
       });
+
+      return file;
+    }),
+  getFile: privateProcedure
+    .input(z.object({ key: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { userId } = ctx;
+
+      const file = await db.file.findFirst({
+        where: {
+          key: input.key,
+          userId: userId,
+        },
+      });
+
+      if (!file) throw new TRPCError({ code: "NOT_FOUND" });
 
       return file;
     }),
