@@ -22,7 +22,7 @@ const Page = async ({ params }: PageProps) => {
   }
 
   // make database call
-  const file = db.file.findFirst({
+  const file = await db.file.findFirst({
     where: {
       id: fileid,
       userId: user.id,
@@ -37,7 +37,7 @@ const Page = async ({ params }: PageProps) => {
         {/* left side */}
         <div className="flex-1 xl:flex">
           <div className="px-4 py-6 sm:px-6 lg:pl-8 xl:flex-1 xl:pl-6">
-            <PdfRenderer />
+            <PdfRenderer url={file.url} />
           </div>
         </div>
 
